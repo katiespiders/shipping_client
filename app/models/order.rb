@@ -50,16 +50,21 @@ class Order < ActiveRecord::Base
     # end
 
     def packages_query
-      packages_array = []
+      packages_hash = {}
+      index = 0
+
       items.each do |line_item|
-        puts "!"*80, line_item.inspect
+        item = Product.find(line_item.product_id)
         line_item.quantity.times do
-          item = Product.find(line_item.product_id)
-          packages_array << { weight: item.weight, dimensions: item.dimensions }
+          packages_hash[index] = { weight: item.weight, dimensions: item.dimensions }
+          index += 1
         end
       end
-      puts "@"*80, packages_array.inspect
-      packages_array.to_query(:packages)
+      puts "#"*80
+      packages_hash.each {|k, v| puts v[:dimensions]}
+
+      puts "@"*80, Rack::Utils.parse_nested_query(packages_hash.to_query(:packages))
+      packages_hash.to_query(:packages)
     end
     #
     # def destination
