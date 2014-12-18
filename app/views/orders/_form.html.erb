@@ -35,10 +35,12 @@
     <div class='col-lg-5'>
       <h4 class='brand'>Shipping Option</h4>
       <div class='shipping-options well'>
-        <span class='brand'>:( Please implement me</span>
+        <span class='brand'></span>
       </div>
       <%= f.submit "Checkout", class: "btn btn-success btn-block" %>
     </div>
+    <%= current_order.packages_query %>
+    <% puts "#"*80, current_order.packages_query %>
 
   <% end %>
 </div>
