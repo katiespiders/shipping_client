@@ -35,7 +35,12 @@
     <div class='col-lg-5'>
       <h4 class='brand'>Shipping Options</h4>
       <div class='shipping-options well'>
-        <%= show_options(current_order.usps_options + current_order.fedex_options) %>
+        <div class='col-lg-2'>
+          <%= show_options(current_order.usps_options) %>
+        </div>
+        <div class='col-lg-2'>
+          <%= show_options(current_order.fedex_options) %>
+        </div>
       </div>
       <%= f.submit "Checkout", class: "btn btn-success btn-block" %>
     </div>

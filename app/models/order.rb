@@ -11,15 +11,14 @@ class Order < ActiveRecord::Base
   end
 
   def fedex_options
-    h=HTTParty.get(api_url("FedEx")).parsed_response
-    # raise h.inspect
-    h
+    HTTParty.get(api_url("FedEx")).parsed_response
   end
 
   def usps_options
     HTTParty.get(api_url("USPS")).parsed_response
   end
-  #private
+
+  private
 
     def set_number
       while !self.number || Order.exists?(number: self.number.to_s)
@@ -32,7 +31,7 @@ class Order < ActiveRecord::Base
     end
 
     def api_url(carrier)
-      "http://localhost:4000/shipments?carrier=#{carrier}&#{query_string}"
+      "http://localhost:4000/shipments.json?carrier=#{carrier}&#{query_string}"
     end
 
     def query_string
