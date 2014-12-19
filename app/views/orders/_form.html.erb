@@ -39,7 +39,6 @@
       </div>
       <%= f.submit "Checkout", class: "btn btn-success btn-block" %>
     </div>
-    <%= current_order.packages_query %>
-
+    <% current_order.fedex_options %>
   <% end %>
 </div>

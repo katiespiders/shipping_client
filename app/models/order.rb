@@ -11,9 +11,12 @@ class Order < ActiveRecord::Base
   end
 
   def fedex_options
-    HTTParty.get("http://frozen-bastion-1170.herokuapp.com/shipments")
+    HTTParty.get(api_url("FedEx"))
   end
 
+  def usps_options
+    HTTParty.get(api_url("USPS"))
+  end
   #private
 
     def set_number
@@ -26,8 +29,12 @@ class Order < ActiveRecord::Base
       (SecureRandom.random_number(9000000) + 1000000).to_s
     end
 
-    def to_query_string
+    def api_url(carrier)
+      "http://localhost:4000/shipments?carrier=#{carrier}&#{query_string}"
+    end
 
+    def query_string
+      "#{origin_query}&#{destination_query}&#{packages_query}"
     end
 
     def origin_query
@@ -39,15 +46,14 @@ class Order < ActiveRecord::Base
         }}.to_query
     end
 
-    # def packages
-    #   @packages_array = []
-    #   items.each do |line_item|
-    #     item = Product.find(line_item.product_id)
-    #     line_item.quantity.times do
-    #       @packages_array << Package.new(item.weight, item.dimensions)
-    #     end
-    #   end
-    # end
+    def destination_query
+      { destination: {
+        country:  'US',
+        state:    address.state,
+        city:     address.city,
+        zip:      address.postal_code
+        }}.to_query
+    end
 
     def packages_query
       packages_hash = {}
@@ -60,35 +66,7 @@ class Order < ActiveRecord::Base
           index += 1
         end
       end
-      puts "#"*80
-      packages_hash.each {|k, v| puts v[:dimensions]}
 
-      puts "@"*80, Rack::Utils.parse_nested_query(packages_hash.to_query(:packages))
       packages_hash.to_query(:packages)
     end
-    #
-    # def destination
-    #   Location.new(
-    #     country: 'US',
-    #     zip: address.postal_code,
-    #     state: address.state,
-    #     city: address.city
-    #   )
-    # end
-
-    def destination_query
-      # state = address.state
-      # city = address.city.gsub!(" ", "%20")
-      # zip = address.postal_code
-      # "destination[country]=US&destination[state]=#{state}&destination[city]=#{city}&destination[zip]=#{zip}"
-      { destination: {
-        country:  'US',
-        state:    address.state,
-        city:     address.city,
-        zip:      address.postal_code
-        }}.to_query
-    end
-
-
-
 end
