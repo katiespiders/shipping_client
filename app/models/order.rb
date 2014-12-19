@@ -11,11 +11,13 @@ class Order < ActiveRecord::Base
   end
 
   def fedex_options
-    HTTParty.get(api_url("FedEx"))
+    h=HTTParty.get(api_url("FedEx")).parsed_response
+    # raise h.inspect
+    h
   end
 
   def usps_options
-    HTTParty.get(api_url("USPS"))
+    HTTParty.get(api_url("USPS")).parsed_response
   end
   #private
 

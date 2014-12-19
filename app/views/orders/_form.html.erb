@@ -33,12 +33,11 @@
     </div>
 
     <div class='col-lg-5'>
-      <h4 class='brand'>Shipping Option</h4>
+      <h4 class='brand'>Shipping Options</h4>
       <div class='shipping-options well'>
-        <span class='brand'></span>
+        <%= show_options(current_order.usps_options + current_order.fedex_options) %>
       </div>
       <%= f.submit "Checkout", class: "btn btn-success btn-block" %>
     </div>
-    <% current_order.fedex_options %>
   <% end %>
 </div>
