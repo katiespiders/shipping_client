@@ -31,7 +31,7 @@ class Order < ActiveRecord::Base
     end
 
     def api_url(carrier)
-      "http://localhost:4000/shipments.json?carrier=#{carrier}&#{query_string}"
+      "http://frozen-bastion-1170.herokuapp.com//shipments.json?carrier=#{carrier}&#{query_string}"
     end
 
     def query_string
