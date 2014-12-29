@@ -32,7 +32,7 @@ class Order < ActiveRecord::Base
 
     def api_url(carrier)
       logger.debug "tried to call #{carrier} with query #{query_string}"
-      "http://frozen-bastion-1170.herokuapp.com/shipments.json?carrier=#{carrier}&#{query_string}"
+      "#{api_host}/shipments.json?carrier=#{carrier}&#{query_string}"
     end
 
     def query_string
@@ -64,11 +64,19 @@ class Order < ActiveRecord::Base
       items.each do |line_item|
         item = Product.find(line_item.product_id)
         line_item.quantity.times do
-          packages_hash[index] = { weight: item.weight, dimensions: item.dimensions }
+          packages_hash[index] = { weight: item.weight, dimensions: item.dimensions_query }
           index += 1
         end
       end
 
       packages_hash.to_query(:packages)
+    end
+
+    def api_host
+      if Rails.env.development?
+        "http://localhost:3001"
+      else
+        "http://frozen-bastion-1170.herokuapp.com"
+      end
     end
 end

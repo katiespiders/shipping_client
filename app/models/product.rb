@@ -10,10 +10,19 @@ class Product < ActiveRecord::Base
     self.canonical_name
   end
 
+  def dimensions_query
+    {
+      height: dimensions[0],
+      width: dimensions[1],
+      length: dimensions[2]
+    }
+  end
+
   private
 
   def set_canonical_name
     self.canonical_name = self.name.parameterize
   end
+
 
 end
