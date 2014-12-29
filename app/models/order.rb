@@ -31,7 +31,7 @@ class Order < ActiveRecord::Base
     end
 
     def api_url(carrier)
-      logger.debug "tried to call #{carrier} with query #{query_string}"
+      puts "tried to call #{carrier} with query #{query_string}"
       "#{api_host}/shipments.json?carrier=#{carrier}&#{query_string}"
     end
 

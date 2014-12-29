@@ -11,6 +11,7 @@ class Product < ActiveRecord::Base
   end
 
   def dimensions_query
+    puts "DIMENSIONS: #{dimensions}"
     {
       height: dimensions[0],
       width: dimensions[1],
