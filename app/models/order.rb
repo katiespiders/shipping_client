@@ -15,6 +15,7 @@ class Order < ActiveRecord::Base
   end
 
   def usps_options
+    puts "^"*80, "API URL #{api_url("USPS")}"
     HTTParty.get(api_url("USPS")).parsed_response
   end
 
