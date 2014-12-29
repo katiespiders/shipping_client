@@ -31,7 +31,6 @@ class Order < ActiveRecord::Base
     end
 
     def api_url(carrier)
-      puts "tried to call #{carrier} with query #{query_string}"
       "#{api_host}/shipments.json?carrier=#{carrier}&#{query_string}"
     end
 
@@ -63,7 +62,6 @@ class Order < ActiveRecord::Base
 
       items.each do |line_item|
         item = Product.find(line_item.product_id)
-        puts "*"*80, "THE THING IS #{item.inspect}", "*"*80
         line_item.quantity.times do
           packages_hash[index] = { weight: item.weight, dimensions: item.dimensions_query }
           index += 1
