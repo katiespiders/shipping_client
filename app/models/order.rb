@@ -15,7 +15,6 @@ class Order < ActiveRecord::Base
   end
 
   def usps_options
-    puts "^"*80, "API URL #{api_url("USPS")}"
     HTTParty.get(api_url("USPS")).parsed_response
   end
 
@@ -64,6 +63,7 @@ class Order < ActiveRecord::Base
 
       items.each do |line_item|
         item = Product.find(line_item.product_id)
+        puts "*"*80, "THE THING IS #{item.inspect}", "*"*80
         line_item.quantity.times do
           packages_hash[index] = { weight: item.weight, dimensions: item.dimensions_query }
           index += 1
